@@ -1,0 +1,31 @@
+﻿
+1. Do we need to create seperate  CancellationTokenSource, CancellationToken, random object to ran different tasks?
+   is that because the random need?
+   How to make the randomly events with different possibiliies?
+
+2. Is the car.Distance += car.Speed / 3600.0; right to update the distance? 
+   Distance = Speed * Time
+
+3. I didn't manage to compare who is the first when one car reach the goalDistance due to each car run its own task. 
+   How to use Lock or add to the List<int> carPlaceList = new List<int>?
+
+4. The color changes messly, why?  one lock object
+
+5. In the carStatusCheck, I want to have the "The car is still running", "The car is finished", how to do it?
+   How to check if the task has completely succesfully?
+
+6. Do I handle any Exception in my code?
+
+
+datetime, stopwatch, timmer
+
+7. winner add
+8. every 30 seconds
+
+alway not to put cts inside the Task
+
+
+                //if(token.IsCancellationRequested)
+                //{
+                //    return;
+                //}
