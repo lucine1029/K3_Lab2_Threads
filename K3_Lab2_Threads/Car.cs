@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace K3_Lab2_Threads
 {
-    internal class Car
+    public class Car
     {
+        static object lockerObject = new object();
         public string Name { get; set; }
         public int Id { get; set; }
         public double Speed { get; set; }
         public double Distance { get; set; }
         public string Status { get; set; } //added status property to show see if car is running, finished or in trouble
+
         public Car(string name, int id) //Car constructure, we set the car's starting speed is 120km/h, start distance is 0 km
         {
             Name = name;
@@ -21,8 +23,7 @@ namespace K3_Lab2_Threads
             Id = id;
             Distance = 0.0;
         }
-
-        static object lockerObject = new object();
+        
         public static async Task CarProblemAsync(Car car)
         {
             Random r = new Random();
@@ -57,7 +58,7 @@ namespace K3_Lab2_Threads
                 }
                 await Task.Delay(10000);
             }
-            else if (randomNum <= 18) //Engine failure, speed reduce by 1km/h, 10/50 prob
+            else if (randomNum <= 18) //Engine failure, speed reduce by 10km/h, 10/50 prob
             {
                 lock (lockerObject)
                 {

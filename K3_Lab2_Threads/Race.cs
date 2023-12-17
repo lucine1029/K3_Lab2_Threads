@@ -12,11 +12,9 @@ namespace K3_Lab2_Threads
     internal class Race
     {
         static object lockerObject = new object();
-        public static async Task DriveAsync(Car car)
+        public static async Task DriveAsync(Car car, List<Car> carPlaceList)
         {
             car.Status = "Running";// initial the car status
-            await Console.Out.WriteLineAsync($"{car.Name} started");
-
             double goalDistance = 10;
             int eventCounter = 30;
             while (car.Distance < goalDistance)
@@ -24,23 +22,27 @@ namespace K3_Lab2_Threads
                 eventCounter--;
                 if (eventCounter == 0)  //car problem happens every 30 secs
                 {
+                    car.Status = "In problem";
                     await Car.CarProblemAsync(car);
                     eventCounter = 30;
-                    car.Status = "In problem";
                 }
                 car.Distance += car.Speed / 3600.0; //the distance will add up by every second here                                                  
                 await Task.Delay(1000);  // This make sure that each task run almost every 1 second, not accurate but good enough
             }
- 
+
             if (car.Distance >= goalDistance)
             {
-                if (Program.Winner == 0)
+                lock (lockerObject)
                 {
-                    Program.Winner = car.Id;
+                    Winner.AddCarPlaceList(car, carPlaceList); //when the car reaches the end, call AddCarPlaceList() to add it to the List
+                }
+                if (Winner.winner == 0)
+                {
+                    Winner.winner = car.Id;
                     lock (lockerObject)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"Congratulations, {car.Name} has reached the end! you are the winner!");
+                        Console.WriteLine($"Congratulations, {car.Name} has reached the end! You are the winner!");
                         Console.ResetColor();
                     }
                 }
@@ -53,8 +55,7 @@ namespace K3_Lab2_Threads
                         Console.ResetColor();
                     }
                 }
-                car.Status = "Finished"; 
-                //Environment.Exit(0);
+                car.Status = "Finished";
             }
         }
     }

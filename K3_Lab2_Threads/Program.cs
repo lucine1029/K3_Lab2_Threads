@@ -6,24 +6,24 @@ namespace K3_Lab2_Threads
 {
     internal class Program
     {
-        public static int Winner { get; set; }
-
-        List<int> carPlaceList = new List<int>();
-
         public static async Task Main(string[] args)
         {
             object lockerObject = new object();
-            //create two car objects, the unit of speed is km/h
+            //create 4 car objects
             Car car1 = new Car("Red_Chilly", 1);
             Car car2 = new Car("Blue_Cheese", 2);
             Car car3 = new Car("Golden_Orange", 3);
             Car car4 = new Car("Dark_Sky", 4);
+            //create the carPlaceList, so we can add a car to the list when the car reach the end
+            List<Car> carPlaceList = new List<Car>();
 
-            // create a task for car1 in it's own tread using task.run()
-            Task task1 = Task.Run(async () => await Race.DriveAsync(car1));
-            Task task2 = Task.Run(async () => await Race.DriveAsync(car2));
-            Task task3 = Task.Run(async () => await Race.DriveAsync(car3));
-            Task task4 = Task.Run(async () => await Race.DriveAsync(car4));
+            // create 4 tasks for these 4 cars, so they are runing on own tread
+            Task task1 = Task.Run(async () => await Race.DriveAsync(car1, carPlaceList));
+            Task task2 = Task.Run(async () => await Race.DriveAsync(car2, carPlaceList));
+            Task task3 = Task.Run(async () => await Race.DriveAsync(car3, carPlaceList));
+            Task task4 = Task.Run(async () => await Race.DriveAsync(car4, carPlaceList));
+            await Console.Out.WriteLineAsync("The competition has started!");
+            await Console.Out.WriteLineAsync();
 
             //in the main thread, check car status when press[enter]
             bool status = true;
@@ -49,15 +49,22 @@ namespace K3_Lab2_Threads
                         Console.WriteLine($"{car4.Name,-15}: {car4.Distance.ToString("0.00"),-6} km \t>>>> Speed: {car4.Speed,-6} km/h, \t>>>> car is {car4.Status}.");
                         Console.ResetColor();
                     }
+                    //when all cars reach the end, the competition ends
                     if (car1.Status == "Finished" && car2.Status == "Finished" && car3.Status == "Finished" && car4.Status == "Finished")
                     {
-                        await Console.Out.WriteLineAsync($"The competition has finished now. BYE~~~~~~~~~~~~");
+                        await Console.Out.WriteLineAsync($"The competition has finished now.");
                         Thread.Sleep(3000);
+                        await Console.Out.WriteLineAsync($"{car1.Name} is Number {carPlaceList.IndexOf(car1) + 1}");
+                        await Console.Out.WriteLineAsync($"{car2.Name} is Number {carPlaceList.IndexOf(car2) + 1}");
+                        await Console.Out.WriteLineAsync($"{car3.Name} is Number {carPlaceList.IndexOf(car3) + 1}");
+                        await Console.Out.WriteLineAsync($"{car4.Name} is Number {carPlaceList.IndexOf(car4) + 1}");
+                        await Console.Out.WriteLineAsync(" BYE~~~~~~~~~~~~");
                         status = false;
                         Environment.Exit(0);
                     }
                 }
             }
+
             ////wait for all the tasks to complete or cancael
             //try
             //{
