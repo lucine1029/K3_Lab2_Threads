@@ -47,6 +47,7 @@ namespace K3_Lab2_Threads
                         Console.WriteLine($"{car2.Name,-15}: {car2.Distance.ToString("0.00"),-6} km \t>>>> Speed: {car2.Speed,-6} km/h, \t>>>> car is {car2.Status}.");
                         Console.WriteLine($"{car3.Name,-15}: {car3.Distance.ToString("0.00"),-6} km \t>>>> Speed: {car3.Speed,-6} km/h, \t>>>> car is {car3.Status}.");
                         Console.WriteLine($"{car4.Name,-15}: {car4.Distance.ToString("0.00"),-6} km \t>>>> Speed: {car4.Speed,-6} km/h, \t>>>> car is {car4.Status}.");
+                        Console.WriteLine();
                         Console.ResetColor();
                     }
                     //when all cars reach the end, the competition ends
@@ -58,7 +59,7 @@ namespace K3_Lab2_Threads
                         await Console.Out.WriteLineAsync($"{car2.Name} is Number {carPlaceList.IndexOf(car2) + 1}");
                         await Console.Out.WriteLineAsync($"{car3.Name} is Number {carPlaceList.IndexOf(car3) + 1}");
                         await Console.Out.WriteLineAsync($"{car4.Name} is Number {carPlaceList.IndexOf(car4) + 1}");
-                        await Console.Out.WriteLineAsync(" BYE~~~~~~~~~~~~");
+                        await Console.Out.WriteLineAsync("BYE~~~~~~~~~~~~");
                         status = false;
                         Environment.Exit(0);
                     }
