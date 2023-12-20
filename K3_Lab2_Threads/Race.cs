@@ -35,24 +35,24 @@ namespace K3_Lab2_Threads
                 lock (lockerObject)
                 {
                     Winner.AddCarPlaceList(car, carPlaceList); //when the car reaches the end, call AddCarPlaceList() to add it to the List
-                }
-                if (Winner.winner == 0)
-                {
-                    Winner.winner = car.Id;
-                    lock (lockerObject)
+
+                    if (Winner.winner == 0)
                     {
+                        Winner.winner = car.Id;
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Congratulations, {car.Name} has reached the end! You are the winner!");
                         Console.ResetColor();
                     }
-                }
-                else
-                {
-                    lock (lockerObject)
+                    else
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Congratulations! {car.Name} has reached the end!");
                         Console.ResetColor();
+                        if(carPlaceList.Count == 4) 
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("The competition has finished now, please press [Enter] to see the Place List!");
+                        }
                     }
                 }
                 car.Status = "Finished";

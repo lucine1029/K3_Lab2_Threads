@@ -6,14 +6,20 @@ namespace K3_Lab2_Threads
 {
     internal class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main(string[] args) //maybe I can put a timer and set background sound for the project here later 
         {
             object lockerObject = new object();
+            
+            //Enabling the using of emojis.
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            Console.InputEncoding = System.Text.Encoding.Unicode;
+
             //create 4 car objects
-            Car car1 = new Car("Red_Chilly", 1);
-            Car car2 = new Car("Blue_Cheese", 2);
-            Car car3 = new Car("Golden_Orange", 3);
-            Car car4 = new Car("Dark_Sky", 4);
+            Car car1 = new Car("🚘Red_Chilly", 1);
+            Car car2 = new Car("🚙Blue_Cheese", 2);
+            Car car3 = new Car("🚕Golden_Orange", 3);
+            Car car4 = new Car("🚓Dark_Sky", 4);
+
             //create the carPlaceList, so we can add a car to the list when the car reach the end
             List<Car> carPlaceList = new List<Car>();
 
@@ -50,32 +56,19 @@ namespace K3_Lab2_Threads
                         Console.WriteLine();
                         Console.ResetColor();
                     }
-                    //when all cars reach the end, the competition ends
-                    if (car1.Status == "Finished" && car2.Status == "Finished" && car3.Status == "Finished" && car4.Status == "Finished")
+                }
+                //when all cars reach the end, the competition ends
+                if (car1.Status == "Finished" && car2.Status == "Finished" && car3.Status == "Finished" && car4.Status == "Finished")
+                {
+                    foreach (var car in carPlaceList)
                     {
-                        await Console.Out.WriteLineAsync($"The competition has finished now.");
-                        Thread.Sleep(3000);
-                        await Console.Out.WriteLineAsync($"{car1.Name} is Number {carPlaceList.IndexOf(car1) + 1}");
-                        await Console.Out.WriteLineAsync($"{car2.Name} is Number {carPlaceList.IndexOf(car2) + 1}");
-                        await Console.Out.WriteLineAsync($"{car3.Name} is Number {carPlaceList.IndexOf(car3) + 1}");
-                        await Console.Out.WriteLineAsync($"{car4.Name} is Number {carPlaceList.IndexOf(car4) + 1}");
-                        await Console.Out.WriteLineAsync("BYE~~~~~~~~~~~~");
-                        status = false;
-                        Environment.Exit(0);
+                        await Console.Out.WriteLineAsync($"{car.Name} is Number {carPlaceList.IndexOf(car) + 1}");
                     }
+                    await Console.Out.WriteLineAsync();
+                    await Console.Out.WriteLineAsync("BYE~~~~~~~~~~~~");
+                    status = false;
                 }
             }
-
-            ////wait for all the tasks to complete or cancael
-            //try
-            //{
-            //    Task.WaitAll(task1, task2, task3, task4);
-            //    await Console.Out.WriteLineAsync($"The competition has finished now.");
-            //}
-            //catch (AggregateException e)
-            //{
-            //    e.Handle(e => e is OperationCanceledException);
-            //}
         }
     }
 }
